@@ -126,8 +126,6 @@ To design a **weekly subscription-based insurance system** that:
 
 ### 👨‍🍳 Food Delivery Partner
 
-## 🏗️ System Architecture
-
 <p align="center">
   <img src="assets/persona.jpeg" width="900"/>
 </p>
