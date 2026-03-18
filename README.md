@@ -125,6 +125,14 @@ To design a **weekly subscription-based insurance system** that:
 ## 👤 Target Persona
 
 ### 👨‍🍳 Food Delivery Partner
+
+## 🏗️ System Architecture
+
+<p align="center">
+  <img src="assets/persona.jpeg" width="900"/>
+</p>
+
+
 - Works for platforms like Zomato/Swiggy
 - Paid per delivery + incentives
 - Income fluctuates daily
