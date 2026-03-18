@@ -175,29 +175,43 @@ Triggers are **data-driven and automated**:
 
 ## 🛠️ Tech Stack
 
-### Frontend
-- React.js / Next.js
-- Tailwind CSS
+## 🛠️ Tech Stack
 
-### Backend
-- Node.js / Flask
-- REST APIs
+### 🎨 Frontend
+![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
+![Next JS](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
 
-### AI/ML
-- Python (Scikit-learn, TensorFlow)
+---
 
-### Data Sources
-- Weather APIs
-- Traffic APIs
-- Mock platform APIs
+### ⚙️ Backend
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Flask](https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white)
 
-### Database
-- MongoDB / PostgreSQL
+---
 
-### Payments (Simulation)
-- Razorpay (test mode)
-- Stripe sandbox
+### 🤖 AI / ML
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)
+![Scikit-Learn](https://img.shields.io/badge/ScikitLearn-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)
+![TensorFlow](https://img.shields.io/badge/TensorFlow-FF6F00?style=for-the-badge&logo=tensorflow&logoColor=white)
 
+---
+
+### 🌐 Data Sources
+![Weather API](https://img.shields.io/badge/Weather-API-blue?style=for-the-badge&logo=cloudflare&logoColor=white)
+![Traffic API](https://img.shields.io/badge/Traffic-Data-orange?style=for-the-badge&logo=googlemaps&logoColor=white)
+
+---
+
+### 🗄️ Database
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white)
+
+---
+
+### 💳 Payments
+![Razorpay](https://img.shields.io/badge/Razorpay-02042B?style=for-the-badge&logo=razorpay&logoColor=white)
+![Stripe](https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white)
 ---
 
 ## 📊 Key Features
