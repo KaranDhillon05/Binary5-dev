@@ -2,11 +2,90 @@
 # 🚀 AI-Powered Parametric Insurance for Delivery Partners
 
 ## 📌 Problem Statement
-Delivery partners in India (Zomato, Swiggy, Zepto, Amazon, etc.) frequently face **income loss due to external disruptions** such as weather, traffic, app failures, and operational issues.
+## 📖 Problem Story
 
-Currently, there is **no structured financial protection system**, forcing them to bear the losses entirely.
+It’s **8:30 PM in Chennai** — peak delivery hour.
 
-This project builds an **AI-powered parametric insurance platform** that provides **instant, automated payouts** when such disruptions occur.
+Ravi, a Swiggy delivery partner, logs into the app.  
+This is the time he earns the most.
+
+On a normal day, he completes **4–5 deliveries per hour**,  
+earning around **₹400–₹500** — enough to support his family.
+
+But today is different.
+
+Dark clouds roll in. Within minutes, heavy rain floods the streets.  
+Traffic comes to a standstill. Orders slow down. Restaurants delay pickups.
+
+Ravi stays online for **2 hours**.
+
+He gets just **one delivery**.
+
+His earnings drop from **₹800 → ₹120**.
+
+---
+
+### ⚠️ The Reality
+
+- No compensation  
+- No fallback  
+- No protection  
+
+The customer gets a refund.  
+The platform adjusts operations.
+
+But Ravi — the one out in the rain —  
+**bears the entire loss.**
+
+---
+
+### 🔁 And This Isn’t Rare
+
+Some days it's:
+- 🌧️ Heavy rain  
+- ☀️ Extreme heat  
+- ⚠️ App crashes  
+- 📉 Low demand  
+
+Every disruption silently eats into his income.
+
+Over a month, he loses **20–30% of his earnings** —  
+not because he didn’t work,  
+but because the system didn’t protect him.
+
+---
+
+## 💡 Imagine a Better System
+
+Ravi logs in on a similar rainy day.
+
+But this time, something is different.
+
+The system already knows.
+
+- It detects heavy rainfall  
+- It predicts demand drop  
+- It tracks that Ravi is active but unable to earn  
+
+And without Ravi doing anything —  
+**no claims, no forms, no waiting** —
+
+💰 **₹300 gets credited instantly to his wallet**
+
+---
+
+### 🚀 This is What We Are Building
+
+An **AI-powered parametric insurance system**  
+that protects the income of delivery partners:
+
+- ⚡ Automatically  
+- 🧠 Intelligently  
+- 💸 Instantly  
+
+---
+
+> 💭 *In a world powered by gig workers, their income shouldn’t depend on luck.*
 
 ---
 
