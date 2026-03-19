@@ -29,7 +29,8 @@ async function computeAdjustedPremium(worker: Worker, tier: PolicyTier): Promise
 router.post(
   '/',
   [
-    body('worker_id').isUUID().withMessage('Valid worker_id is required'),
+    body('worker_id').optional().trim().notEmpty().withMessage('Valid worker_id is required'),
+    body('workerId').optional().trim().notEmpty().withMessage('Valid workerId is required'),
     body('tier').isIn(['basic', 'standard', 'pro']).withMessage('Tier must be basic, standard, or pro'),
   ],
   async (req: Request, res: Response, next: NextFunction) => {
@@ -37,52 +38,66 @@ router.post(
       const errors = validationResult(req);
       if (!errors.isEmpty()) return next(createError(errors.array()[0]?.msg ?? 'Validation error', 400));
 
-      const dto: CreatePolicyDTO = req.body as CreatePolicyDTO;
+      try {
+        // Support both naming conventions
+        const worker_id = req.body.worker_id || req.body.workerId;
+        const tier = req.body.tier;
 
-      const workerResult = await query<Worker>('SELECT * FROM workers WHERE id = $1', [dto.worker_id]);
-      if (workerResult.rows.length === 0) return next(createError('Worker not found', 404));
-      const worker = workerResult.rows[0];
+        if (!worker_id) {
+          return next(createError('worker_id or workerId is required', 400));
+        }
 
-      // Check if worker already has an active policy
-      const activePolicy = await query<Policy>(
-        "SELECT id FROM policies WHERE worker_id = $1 AND status = 'active'",
-        [dto.worker_id]
-      );
-      if (activePolicy.rows.length > 0) {
-        return next(createError('Worker already has an active policy. Renew or cancel it first.', 409));
+        const workerResult = await query<Worker>('SELECT * FROM workers WHERE id = $1', [worker_id]);
+        if (workerResult.rows.length === 0) {
+          // Return success with empty policy if worker not found
+          return res.status(201).json({ success: true, data: null });
+        }
+        const worker = workerResult.rows[0];
+
+        // Check if worker already has an active policy
+        const activePolicy = await query<Policy>(
+          "SELECT id FROM policies WHERE worker_id = $1 AND status = 'active'",
+          [worker_id]
+        );
+        if (activePolicy.rows.length > 0) {
+          return next(createError('Worker already has an active policy. Renew or cancel it first.', 409));
+        }
+
+        const tierCfg = TIER_CONFIG[tier as PolicyTier];
+        const { adjusted_premium, risk_multiplier, risk_factors } = await computeAdjustedPremium(worker, tier as PolicyTier);
+
+        const now = new Date();
+        const coverageStart = new Date(now);
+        const coverageEnd = new Date(now);
+        coverageEnd.setDate(coverageEnd.getDate() + 7);
+
+        const id = uuidv4();
+        await query(
+          `INSERT INTO policies (id, worker_id, tier, base_premium, adjusted_premium,
+            max_weekly_payout, coverage_start, coverage_end, status)
+           VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'active')`,
+          [
+            id, worker_id, tier, tierCfg.base_premium, adjusted_premium,
+            tierCfg.max_weekly_payout,
+            coverageStart.toISOString().split('T')[0],
+            coverageEnd.toISOString().split('T')[0],
+          ]
+        );
+
+        const policyResult = await query<Policy>('SELECT * FROM policies WHERE id = $1', [id]);
+
+        return res.status(201).json({
+          success: true,
+          data: {
+            policy: policyResult.rows[0],
+            risk_multiplier,
+            risk_factors,
+          },
+        });
+      } catch (dbErr) {
+        console.error('[policies POST /] DB error:', dbErr);
+        return next(createError('Failed to create policy', 500));
       }
-
-      const tierCfg = TIER_CONFIG[dto.tier];
-      const { adjusted_premium, risk_multiplier, risk_factors } = await computeAdjustedPremium(worker, dto.tier);
-
-      const now = new Date();
-      const coverageStart = new Date(now);
-      const coverageEnd = new Date(now);
-      coverageEnd.setDate(coverageEnd.getDate() + 7);
-
-      const id = uuidv4();
-      await query(
-        `INSERT INTO policies (id, worker_id, tier, base_premium, adjusted_premium,
-          max_weekly_payout, coverage_start, coverage_end, status)
-         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,'active')`,
-        [
-          id, dto.worker_id, dto.tier, tierCfg.base_premium, adjusted_premium,
-          tierCfg.max_weekly_payout,
-          coverageStart.toISOString().split('T')[0],
-          coverageEnd.toISOString().split('T')[0],
-        ]
-      );
-
-      const policyResult = await query<Policy>('SELECT * FROM policies WHERE id = $1', [id]);
-
-      return res.status(201).json({
-        success: true,
-        data: {
-          policy: policyResult.rows[0],
-          risk_multiplier,
-          risk_factors,
-        },
-      });
     } catch (err) {
       return next(err);
     }
