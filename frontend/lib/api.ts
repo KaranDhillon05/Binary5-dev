@@ -184,7 +184,7 @@ export async function createClaim(data: ClaimData): Promise<Claim | null> {
 
 export async function getClaims(workerId?: string): Promise<Claim[] | null> {
   try {
-    const url = workerId ? `/api/claims?workerId=${workerId}` : "/api/claims";
+    const url = workerId ? `/api/claims?worker_id=${workerId}` : "/api/claims";
     const res = await api.get(url);
     const claims = res.data.data || res.data;
     return Array.isArray(claims) ? claims.map(transformClaim) : [];

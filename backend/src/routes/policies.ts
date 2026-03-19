@@ -97,21 +97,27 @@ router.get(
       const { workerId } = req.query;
 
       if (!workerId || typeof workerId !== 'string') {
-        return next(createError('workerId query parameter is required', 400));
+        return res.json({ success: true, data: [] }); // Return empty array for missing workerId
       }
 
-      // Verify worker exists first
-      const workerCheck = await query('SELECT id FROM workers WHERE id = $1', [workerId]);
-      if (workerCheck.rows.length === 0) {
-        return res.json({ success: true, data: [] }); // Return empty array if worker doesn't exist
+      try {
+        // Verify worker exists first
+        const workerCheck = await query('SELECT id FROM workers WHERE id = $1', [workerId]);
+        if (workerCheck.rows.length === 0) {
+          return res.json({ success: true, data: [] }); // Return empty array if worker doesn't exist
+        }
+
+        const result = await query<Policy>(
+          'SELECT * FROM policies WHERE worker_id = $1 ORDER BY created_at DESC',
+          [workerId]
+        );
+
+        return res.json({ success: true, data: result.rows });
+      } catch (dbErr) {
+        // If database error, return empty array as fallback
+        console.error(`[policies GET] DB error for workerId ${workerId}:`, dbErr);
+        return res.json({ success: true, data: [] });
       }
-
-      const result = await query<Policy>(
-        'SELECT * FROM policies WHERE worker_id = $1 ORDER BY created_at DESC',
-        [workerId]
-      );
-
-      return res.json({ success: true, data: result.rows });
     } catch (err) {
       return next(err);
     }

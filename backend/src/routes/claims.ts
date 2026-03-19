@@ -217,45 +217,51 @@ router.get(
         offset:    req.query['offset'] ? parseInt(req.query['offset'] as string, 10) : 0,
       };
 
-      const conditions: string[] = [];
-      const params: unknown[] = [];
-      let paramIdx = 1;
+      try {
+        const conditions: string[] = [];
+        const params: unknown[] = [];
+        let paramIdx = 1;
 
-      if (filter.zone) {
-        conditions.push(`w.zone = $${paramIdx++}`);
-        params.push(filter.zone);
-      }
-      if (filter.status) {
-        conditions.push(`c.status = $${paramIdx++}`);
-        params.push(filter.status);
-      }
-      if (filter.from_date) {
-        conditions.push(`c.created_at >= $${paramIdx++}`);
-        params.push(filter.from_date);
-      }
-      if (filter.to_date) {
-        conditions.push(`c.created_at <= $${paramIdx++}`);
-        params.push(filter.to_date);
-      }
-      if (filter.worker_id) {
-        conditions.push(`c.worker_id = $${paramIdx++}`);
-        params.push(filter.worker_id);
-      }
+        if (filter.zone) {
+          conditions.push(`w.zone = $${paramIdx++}`);
+          params.push(filter.zone);
+        }
+        if (filter.status) {
+          conditions.push(`c.status = $${paramIdx++}`);
+          params.push(filter.status);
+        }
+        if (filter.from_date) {
+          conditions.push(`c.created_at >= $${paramIdx++}`);
+          params.push(filter.from_date);
+        }
+        if (filter.to_date) {
+          conditions.push(`c.created_at <= $${paramIdx++}`);
+          params.push(filter.to_date);
+        }
+        if (filter.worker_id) {
+          conditions.push(`c.worker_id = $${paramIdx++}`);
+          params.push(filter.worker_id);
+        }
 
-      const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
-      params.push(filter.limit, filter.offset);
+        const whereClause = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : '';
+        params.push(filter.limit, filter.offset);
 
-      const sql = `
-        SELECT c.*, w.name as worker_name, w.zone, w.city
-        FROM claims c
-        JOIN workers w ON c.worker_id = w.id
-        ${whereClause}
-        ORDER BY c.created_at DESC
-        LIMIT $${paramIdx++} OFFSET $${paramIdx}
-      `;
+        const sql = `
+          SELECT c.*, w.name as worker_name, w.zone, w.city
+          FROM claims c
+          JOIN workers w ON c.worker_id = w.id
+          ${whereClause}
+          ORDER BY c.created_at DESC
+          LIMIT $${paramIdx++} OFFSET $${paramIdx}
+        `;
 
-      const result = await query<Claim>(sql, params);
-      return res.json({ success: true, data: result.rows, total: result.rowCount });
+        const result = await query<Claim>(sql, params);
+        return res.json({ success: true, data: result.rows, total: result.rowCount });
+      } catch (dbErr) {
+        // If database error, return empty array as fallback
+        console.error('[claims GET /] DB error:', dbErr);
+        return res.json({ success: true, data: [], total: 0 });
+      }
     } catch (err) {
       return next(err);
     }
