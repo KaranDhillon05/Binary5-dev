@@ -161,7 +161,7 @@ export default function DashboardPage() {
                 <tbody className="divide-y divide-gray-50">
                   {recentClaims.map((claim) => (
                     <tr key={claim.id} className="hover:bg-gray-50">
-                      <td className="py-2.5 capitalize">{(claim?.type || "unknown")?.replace(/_/g, " ")}</td>
+                      <td className="py-2.5 capitalize">{(claim?.type || "unknown").replace(/_/g, " ")}</td>
                       <td className="py-2.5 font-medium">{formatCurrency(claim?.amount || 0)}</td>
                       <td className="py-2.5">
                         <Badge variant={getStatusVariant(claim?.status || "")}>
