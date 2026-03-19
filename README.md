@@ -61,6 +61,49 @@ Q-Shield is a **parametric income insurance platform** — meaning payouts are t
 
 ---
 
+## ⚡ Core Innovation: Income Shadow
+
+Traditional parametric insurance reacts to events like rain or traffic.
+
+Q-Shield goes one step further — it models income itself.
+
+We create a real-time **Income Shadow** for every worker:
+a continuously updated estimate of what the worker *should* be earning based on:
+
+- Time of day
+- Delivery zone demand
+- Weather conditions
+- Historical earning patterns
+
+### 💡 How it works
+
+Expected Earnings (real-time) = f(time, zone, weather, demand)
+
+Actual Earnings = real-time delivery data
+
+Loss = Expected - Actual
+
+When this gap crosses a threshold, Q-Shield automatically triggers a payout — even if no explicit disruption event is declared.
+
+### 🚀 Why this matters
+
+- Moves from event-based → outcome-based protection
+- Captures hidden income loss (low demand, silent disruptions)
+- Enables fair, personalized payouts
+
+> Q-Shield doesn’t insure events — it insures income itself.
+
+---
+
+Expected Earnings  ────────────────
+Actual Earnings    ────\_____
+
+Gap → Auto payout ⚡
+
+---
+
+![Business & Risk Pool Diagram](./assets/business.png)
+
 ## Weekly Premium Model
 
 Premiums are structured on a **weekly basis** to match the typical earnings cycle of a gig worker. Workers pay weekly, and coverage resets each Monday.
@@ -122,7 +165,8 @@ Q-Shield monitors **3 disruption categories** in real time using external APIs. 
 
 ## Application Workflow
 
-```
+![](./assets/sequence.png)
+<!-- ```
 ┌─────────────────────────────────────────────────────────────┐
 │  ONBOARDING (5 min)                                         │
 │  Worker registers → uploads platform ID + Aadhaar           │
@@ -152,7 +196,7 @@ Q-Shield monitors **3 disruption categories** in real time using external APIs. 
 │  Worker notified via push + SMS                             │
 │  Claim logged to history for future risk modeling           │
 └─────────────────────────────────────────────────────────────┘
-```
+``` -->
 
 ---
 
@@ -303,7 +347,9 @@ Claim submitted
 
 ## Architecture Overview
 
-```
+![](./assets/architecture.png)
+
+<!-- ```
 ┌─────────────────┐       ┌──────────────────────────────┐
 │   Worker App    │──────▶│     Next.js Frontend (PWA)   │
 │ (Mobile / Web)  │       │  Worker Portal + Admin View  │
@@ -333,7 +379,7 @@ Claim submitted
                           │  - Mock Platform API             │
                           │  - Mock Payment Gateway (UPI)    │
                           └──────────────────────────────────┘
-```
+``` -->
 
 **Core data flows:**
 1. **Onboarding:** Worker registers → ML service risk-scores profile → weekly premium quote generated → policy created on payment.
