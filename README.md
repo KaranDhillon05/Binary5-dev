@@ -102,7 +102,7 @@ Gap → Auto payout ⚡
 
 ---
 
-![Business & Risk Pool Diagram](./assets/business.png)
+![Business & Risk Pool Diagram](./assets/business.jpeg)
 
 ## Weekly Premium Model
 
@@ -165,7 +165,7 @@ Q-Shield monitors **3 disruption categories** in real time using external APIs. 
 
 ## Application Workflow
 
-![](./assets/sequence.png)
+![Application Worklow](./assets/sequence.jpeg)
 <!-- ```
 ┌─────────────────────────────────────────────────────────────┐
 │  ONBOARDING (5 min)                                         │
@@ -347,7 +347,7 @@ Claim submitted
 
 ## Architecture Overview
 
-![](./assets/architecture.png)
+![](./assets/architecture.jpeg)
 
 <!-- ```
 ┌─────────────────┐       ┌──────────────────────────────┐
