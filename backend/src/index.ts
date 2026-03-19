@@ -19,6 +19,9 @@ import healthRouter   from './routes/health';
 
 const app = express();
 
+// Trust proxy for Railway deployment (required for rate limiting and X-Forwarded-For)
+app.set('trust proxy', 1);
+
 app.use(cors({
   origin: env.CORS_ORIGIN,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
