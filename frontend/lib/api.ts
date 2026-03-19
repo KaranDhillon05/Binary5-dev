@@ -81,10 +81,47 @@ export const MOCK_CLAIMS: Claim[] = [
   { id: "clm-005", type: "traffic", amount: 95, status: "rejected", date: "2026-02-20", fraudScore: 0.82, zone: "Electronic City" },
 ];
 
+function transformWorker(data: any): Worker {
+  return {
+    id: data.id,
+    name: data.name,
+    phone: data.phone,
+    platform: data.platform,
+    city: data.city,
+    zone: data.zone,
+    deliveryHoursPerDay: data.delivery_hours_per_day ?? data.deliveryHoursPerDay ?? 0,
+  };
+}
+
+function transformPolicy(data: any): Policy {
+  return {
+    id: data.id,
+    tier: data.tier,
+    basePremium: data.base_premium ?? data.basePremium ?? 0,
+    adjustedPremium: data.adjusted_premium ?? data.adjustedPremium ?? 0,
+    maxWeeklyPayout: data.max_weekly_payout ?? data.maxWeeklyPayout ?? 0,
+    coverageEnd: data.coverage_end ?? data.coverageEnd ?? '',
+    status: data.status,
+  };
+}
+
+function transformClaim(data: any): Claim {
+  return {
+    id: data.id,
+    type: data.type,
+    amount: data.amount ?? 0,
+    status: data.status,
+    date: data.date ?? data.created_at ?? '',
+    fraudScore: data.fraud_score ?? data.fraudScore,
+    description: data.description,
+    zone: data.zone,
+  };
+}
+
 export async function getWorkerProfile(workerId: string): Promise<Worker | null> {
   try {
     const res = await api.get(`/api/workers/${workerId}`);
-    return res.data;
+    return res.data.data ? transformWorker(res.data.data) : transformWorker(res.data);
   } catch {
     return null;
   }
@@ -129,7 +166,8 @@ export async function createPolicy(workerId: string, tier: string): Promise<Poli
 export async function getPolicies(workerId: string): Promise<Policy[] | null> {
   try {
     const res = await api.get(`/api/policies?workerId=${workerId}`);
-    return res.data.data || res.data;
+    const policies = res.data.data || res.data;
+    return Array.isArray(policies) ? policies.map(transformPolicy) : [];
   } catch {
     return null;
   }
@@ -148,7 +186,8 @@ export async function getClaims(workerId?: string): Promise<Claim[] | null> {
   try {
     const url = workerId ? `/api/claims?workerId=${workerId}` : "/api/claims";
     const res = await api.get(url);
-    return res.data.data || res.data;
+    const claims = res.data.data || res.data;
+    return Array.isArray(claims) ? claims.map(transformClaim) : [];
   } catch {
     return null;
   }
@@ -157,7 +196,8 @@ export async function getClaims(workerId?: string): Promise<Claim[] | null> {
 export async function getClaimById(claimId: string): Promise<Claim | null> {
   try {
     const res = await api.get(`/api/claims/${claimId}`);
-    return res.data.data || res.data;
+    const claim = res.data.data || res.data;
+    return claim ? transformClaim(claim) : null;
   } catch {
     return null;
   }

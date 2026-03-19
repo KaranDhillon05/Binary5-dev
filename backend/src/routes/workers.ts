@@ -106,18 +106,20 @@ router.get(
       const result = await query<Worker>('SELECT * FROM workers WHERE id = $1', [workerId]);
       if (result.rows.length === 0) {
         // Return mock worker data instead of 404 to maintain compatibility
-        return res.json({ 
-          success: true, 
-          data: {
-            id: workerId,
-            name: 'Worker Name',
-            phone: '+91 00000 00000',
-            platform: 'zepto',
-            city: 'City',
-            zone: 'Zone',
-            deliveryHoursPerDay: 8
-          }
-        });
+        const mockWorker: Worker = {
+          id: workerId,
+          name: 'Worker Name',
+          phone: '+91 00000 00000',
+          platform: 'zepto',
+          city: 'City',
+          zone: 'Zone',
+          delivery_hours_per_day: 8,
+          tenure_weeks: 0,
+          aadhaar_hash: '',
+          email: null,
+          created_at: new Date(),
+        };
+        return res.json({ success: true, data: mockWorker });
       }
 
       return res.json({ success: true, data: result.rows[0] });
