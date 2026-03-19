@@ -2,7 +2,9 @@
 
 ## ✅ COMPLETED: Backend + Database (Railway)
 
-### 🟢 Backend API - LIVE
+### 🟢 Backend A## 🎯 Deployment Checklist
+
+### Backend (Railway) ✅ COMPLETELIVE
 - **URL**: https://binary5-dev-production.up.railway.app
 - **Status**: Fully Operational
 - **Database**: Connected (PostgreSQL on Railway)
@@ -112,9 +114,13 @@ Binary5-dev/
 │   ├── components/
 │   └── package.json   ✅ Dependencies fixed (React 19)
 │
-├── ml-service/        ⏸️ OPTIONAL (Deploy later)
-│   ├── main.py
-│   └── requirements.txt
+├── ml-service/        ✅ DEPLOYED (Railway)
+│   ├── main.py        ✅ FastAPI running
+│   ├── app/
+│   │   ├── models/    ✅ ML models trained
+│   │   ├── routes/    ✅ Risk/fraud/ring endpoints
+│   │   └── schemas/   ✅ Request/response schemas
+│   └── requirements.txt   ✅ Dependencies installed
 │
 └── DEPLOYMENT_SUCCESS.md  ✅ Complete documentation
 ```
@@ -196,11 +202,13 @@ NEXT_PUBLIC_API_URL=https://binary5-dev-production.up.railway.app
 - [ ] Update backend `CORS_ORIGIN`
 - [ ] Test full application flow
 
-### ML Service (Railway) ⏸️ OPTIONAL
-- [ ] Create new Railway service
-- [ ] Configure Python environment
-- [ ] Deploy ML service
-- [ ] Update backend `ML_SERVICE_URL`
+### ML Service (Railway) ✅ COMPLETE
+- [x] Create new Railway service
+- [x] Configure Python environment (3.11)
+- [x] Train ML models on startup
+- [x] Deploy ML service
+- [x] Update backend `ML_SERVICE_URL`
+- [x] Verify risk scoring working
 
 ### External APIs ⏸️ OPTIONAL
 - [ ] Get OpenWeather API key
