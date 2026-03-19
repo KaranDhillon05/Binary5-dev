@@ -89,6 +89,29 @@ router.post(
   }
 );
 
+// GET /api/policies - Get policies by workerId query parameter
+router.get(
+  '/',
+  async (req: Request, res: Response, next: NextFunction) => {
+    try {
+      const { workerId } = req.query;
+
+      if (!workerId) {
+        return next(createError('workerId query parameter is required', 400));
+      }
+
+      const result = await query<Policy>(
+        'SELECT * FROM policies WHERE worker_id = $1 ORDER BY created_at DESC',
+        [workerId]
+      );
+
+      return res.json({ success: true, data: result.rows });
+    } catch (err) {
+      return next(err);
+    }
+  }
+);
+
 // GET /api/policies/:id
 router.get(
   '/:id',

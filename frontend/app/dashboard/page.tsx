@@ -56,7 +56,7 @@ export default function DashboardPage() {
           Welcome back, {worker?.name?.split(" ")[0]} 👋
         </h1>
         <p className="text-gray-500 mt-1">
-          {worker?.platform} · {worker?.zone}, {worker?.city}
+          {worker?.platform || "N/A"} · {worker?.zone || "N/A"}, {worker?.city || "N/A"}
         </p>
       </div>
 
@@ -70,25 +70,25 @@ export default function DashboardPage() {
             {policy ? (
               <div className="space-y-3">
                 <div className="flex items-center gap-2">
-                  <Badge variant="info" className="capitalize">{policy.tier}</Badge>
-                  <Badge variant={getStatusVariant(policy.status)}>{getStatusLabel(policy.status)}</Badge>
+                  <Badge variant="info" className="capitalize">{policy?.tier || "N/A"}</Badge>
+                  <Badge variant={getStatusVariant(policy?.status || "")}>{getStatusLabel(policy?.status || "")}</Badge>
                 </div>
                 <div className="grid grid-cols-2 gap-3 text-sm">
                   <div>
                     <p className="text-gray-500">Weekly Premium</p>
-                    <p className="font-semibold text-gray-900">{formatCurrency(policy.adjustedPremium)}</p>
+                    <p className="font-semibold text-gray-900">{formatCurrency(policy?.adjustedPremium || 0)}</p>
                   </div>
                   <div>
                     <p className="text-gray-500">Max Weekly Payout</p>
-                    <p className="font-semibold text-gray-900">{formatCurrency(policy.maxWeeklyPayout)}</p>
+                    <p className="font-semibold text-gray-900">{formatCurrency(policy?.maxWeeklyPayout || 0)}</p>
                   </div>
                   <div>
                     <p className="text-gray-500">Coverage Until</p>
-                    <p className="font-semibold text-gray-900">{formatDate(policy.coverageEnd)}</p>
+                    <p className="font-semibold text-gray-900">{formatDate(policy?.coverageEnd || "")}</p>
                   </div>
                   <div>
                     <p className="text-gray-500">Base Premium</p>
-                    <p className="font-semibold text-gray-900">{formatCurrency(policy.basePremium)}</p>
+                    <p className="font-semibold text-gray-900">{formatCurrency(policy?.basePremium || 0)}</p>
                   </div>
                 </div>
               </div>
@@ -109,11 +109,11 @@ export default function DashboardPage() {
             <CardTitle>Zone Risk Status</CardTitle>
           </CardHeader>
           <CardContent>
-            <RiskIndicator level="medium" zone={worker?.zone} />
+            <RiskIndicator level="medium" zone={worker?.zone || ""} />
             <div className="mt-4 grid grid-cols-3 gap-3 text-center text-sm">
               <div className="bg-gray-50 rounded-lg p-3">
                 <Clock className="w-4 h-4 text-blue-500 mx-auto mb-1" />
-                <p className="font-semibold text-gray-900">{worker?.deliveryHoursPerDay}h</p>
+                <p className="font-semibold text-gray-900">{worker?.deliveryHoursPerDay || 0}h</p>
                 <p className="text-xs text-gray-500">Today</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-3">
@@ -161,14 +161,14 @@ export default function DashboardPage() {
                 <tbody className="divide-y divide-gray-50">
                   {recentClaims.map((claim) => (
                     <tr key={claim.id} className="hover:bg-gray-50">
-                      <td className="py-2.5 capitalize">{claim.type.replace("_", " ")}</td>
-                      <td className="py-2.5 font-medium">{formatCurrency(claim.amount)}</td>
+                      <td className="py-2.5 capitalize">{(claim?.type || "unknown")?.replace(/_/g, " ")}</td>
+                      <td className="py-2.5 font-medium">{formatCurrency(claim?.amount || 0)}</td>
                       <td className="py-2.5">
-                        <Badge variant={getStatusVariant(claim.status)}>
-                          {getStatusLabel(claim.status)}
+                        <Badge variant={getStatusVariant(claim?.status || "")}>
+                          {getStatusLabel(claim?.status || "")}
                         </Badge>
                       </td>
-                      <td className="py-2.5 text-gray-500">{formatDate(claim.date)}</td>
+                      <td className="py-2.5 text-gray-500">{formatDate(claim?.date || "")}</td>
                     </tr>
                   ))}
                 </tbody>

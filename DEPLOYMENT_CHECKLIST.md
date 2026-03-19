@@ -1,5 +1,39 @@
 # 🚀 Q-Shield Deployment Checklist
 
+## 🔴 CRITICAL: Recent Fixes Need Deployment
+
+**Date:** March 19, 2026
+
+### Backend Fixes (Must Deploy to Railway)
+- ✅ Worker route accepts string IDs (not just UUIDs)
+  - File: `backend/src/routes/workers.ts` line 98
+- ✅ New policies query endpoint added
+  - File: `backend/src/routes/policies.ts` lines 91-113
+  - Endpoint: `GET /api/policies?workerId=xxx`
+
+### Frontend Fixes (Must Deploy to Vercel)
+- ✅ Dashboard defensive null checks added
+  - File: `frontend/app/dashboard/page.tsx`
+- ✅ PWA icons created (192x192, 512x512)
+  - Files: `frontend/public/icon-192.png`, `frontend/public/icon-512.png`
+
+### Current Production Issues (Will Resolve After Deployment)
+1. Icon 404 errors → Will resolve after frontend deployment
+2. Worker API 400 errors → Will resolve after backend deployment  
+3. Policies 404 errors → Will resolve after backend deployment
+4. TypeError in dashboard → Will resolve after frontend deployment
+
+### Quick Deploy Commands
+```bash
+# Backend
+cd backend && git add src/routes/ && git commit -m "Fix: Worker ID validation and policies endpoint" && git push
+
+# Frontend
+cd frontend && git add app/ public/icon-*.png && git commit -m "Fix: Add icons and dashboard null checks" && git push
+```
+
+---
+
 ## Pre-Deployment
 
 - [ ] All code committed to GitHub

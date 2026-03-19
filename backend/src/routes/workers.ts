@@ -95,7 +95,7 @@ router.post(
 // GET /api/workers/:id
 router.get(
   '/:id',
-  [param('id').isUUID().withMessage('Invalid worker ID')],
+  [param('id').trim().notEmpty().withMessage('Invalid worker ID')],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const errors = validationResult(req);
