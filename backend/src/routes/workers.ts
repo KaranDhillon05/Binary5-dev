@@ -26,14 +26,15 @@ function suggestTier(riskMultiplier: number): PolicyTier {
 const createWorkerValidation = [
   body('name').trim().notEmpty().withMessage('Name is required'),
   body('phone').trim().notEmpty().isMobilePhone('any').withMessage('Valid phone is required'),
-  // Aadhaar: exactly 12 numeric digits (no spaces/hyphens). Leading zeros are valid.
-  // The value is SHA-256 hashed before storage and never returned in responses.
-  body('aadhaar').trim().isLength({ min: 12, max: 12 }).isNumeric().withMessage('Aadhaar must be 12 numeric digits'),
-  body('platform').isIn(['swiggy', 'zomato', 'blinkit', 'zepto', 'dunzo', 'other']).withMessage('Invalid platform'),
+  // Aadhaar: optional, exactly 12 numeric digits if provided
+  body('aadhaar').optional().trim().isLength({ min: 12, max: 12 }).isNumeric().withMessage('Aadhaar must be 12 numeric digits'),
+  // Platform: accept case-insensitive, convert to lowercase
+  body('platform').trim().notEmpty().customSanitizer(val => val?.toLowerCase()).withMessage('Platform is required'),
   body('city').trim().notEmpty().withMessage('City is required'),
   body('zone').trim().notEmpty().withMessage('Zone is required'),
-  body('delivery_hours_per_day').isFloat({ min: 1, max: 16 }).withMessage('Delivery hours must be between 1 and 16'),
-  body('tenure_weeks').isInt({ min: 0 }).withMessage('Tenure weeks must be non-negative'),
+  body('delivery_hours_per_day').optional({ checkFalsy: false }).isFloat({ min: 1, max: 16 }).withMessage('Delivery hours must be between 1 and 16'),
+  body('deliveryHoursPerDay').optional({ checkFalsy: false }).isFloat({ min: 1, max: 16 }).withMessage('Delivery hours must be between 1 and 16'),
+  body('tenure_weeks').optional({ checkFalsy: false }).isInt({ min: 0 }).withMessage('Tenure weeks must be non-negative'),
 ];
 
 // Handler for worker creation
@@ -44,48 +45,67 @@ const createWorkerHandler = async (req: Request, res: Response, next: NextFuncti
       return next(createError(errors.array()[0]?.msg ?? 'Validation error', 400));
     }
 
-    const dto: CreateWorkerDTO = req.body as CreateWorkerDTO;
-    const aadhaar_hash = hashAadhaar(dto.aadhaar);
+    try {
+      // Support both camelCase and snake_case field names
+      const body_data = req.body;
+      const dto: CreateWorkerDTO = {
+        name: body_data.name,
+        phone: body_data.phone,
+        email: body_data.email,
+        aadhaar: body_data.aadhaar || '000000000000', // Default if not provided
+        platform: (body_data.platform || 'other').toLowerCase(),
+        city: body_data.city,
+        zone: body_data.zone,
+        delivery_hours_per_day: body_data.delivery_hours_per_day ?? body_data.deliveryHoursPerDay ?? 8,
+        tenure_weeks: body_data.tenure_weeks ?? 0,
+      };
 
-    // Check for duplicate phone or aadhaar
-    const existing = await query<Worker>(
-      'SELECT id FROM workers WHERE phone = $1 OR aadhaar_hash = $2',
-      [dto.phone, aadhaar_hash]
-    );
-    if (existing.rows.length > 0) {
-      return next(createError('Worker with this phone or Aadhaar already registered', 409));
+      // Only hash aadhaar if it's not the default
+      const aadhaar_hash = dto.aadhaar !== '000000000000' ? hashAadhaar(dto.aadhaar) : hashAadhaar('000000000000');
+
+      // Check for duplicate phone or aadhaar (only if aadhaar is not default)
+      const existing = await query<Worker>(
+        'SELECT id FROM workers WHERE phone = $1' + (dto.aadhaar !== '000000000000' ? ' OR aadhaar_hash = $2' : ''),
+        dto.aadhaar !== '000000000000' ? [dto.phone, aadhaar_hash] : [dto.phone]
+      );
+      if (existing.rows.length > 0) {
+        return next(createError('Worker with this phone or Aadhaar already registered', 409));
+      }
+
+      const id = uuidv4();
+      await query(
+        `INSERT INTO workers (id, name, phone, email, aadhaar_hash, platform, city, zone,
+          delivery_hours_per_day, tenure_weeks)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
+        [
+          id, dto.name, dto.phone, dto.email ?? null, aadhaar_hash,
+          dto.platform, dto.city, dto.zone,
+          dto.delivery_hours_per_day, dto.tenure_weeks,
+        ]
+      );
+
+      const workerResult = await query<Worker>('SELECT * FROM workers WHERE id = $1', [id]);
+      const worker = workerResult.rows[0];
+
+      // Build risk profile
+      const riskResult = await getRiskScore({ worker, zone_type: 'normal' });
+      const suggestedTier = suggestTier(riskResult.risk_multiplier);
+      const tierCfg = TIER_CONFIG[suggestedTier];
+
+      const riskProfile: WorkerRiskProfile = {
+        risk_multiplier: riskResult.risk_multiplier,
+        risk_factors: riskResult.risk_factors,
+        suggested_tier: suggestedTier,
+        estimated_weekly_premium: parseFloat(
+          (tierCfg.base_premium * riskResult.risk_multiplier).toFixed(2)
+        ),
+      };
+
+      return res.status(201).json({ success: true, data: { worker, risk_profile: riskProfile } });
+    } catch (dbErr) {
+      console.error('[workers POST /register] DB error:', dbErr);
+      return next(createError('Failed to register worker. Please try again.', 500));
     }
-
-    const id = uuidv4();
-    await query(
-      `INSERT INTO workers (id, name, phone, email, aadhaar_hash, platform, city, zone,
-        delivery_hours_per_day, tenure_weeks)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)`,
-      [
-        id, dto.name, dto.phone, dto.email ?? null, aadhaar_hash,
-        dto.platform, dto.city, dto.zone,
-        dto.delivery_hours_per_day, dto.tenure_weeks,
-      ]
-    );
-
-    const workerResult = await query<Worker>('SELECT * FROM workers WHERE id = $1', [id]);
-    const worker = workerResult.rows[0];
-
-    // Build risk profile
-    const riskResult = await getRiskScore({ worker, zone_type: 'normal' });
-    const suggestedTier = suggestTier(riskResult.risk_multiplier);
-    const tierCfg = TIER_CONFIG[suggestedTier];
-
-    const riskProfile: WorkerRiskProfile = {
-      risk_multiplier: riskResult.risk_multiplier,
-      risk_factors: riskResult.risk_factors,
-      suggested_tier: suggestedTier,
-      estimated_weekly_premium: parseFloat(
-        (tierCfg.base_premium * riskResult.risk_multiplier).toFixed(2)
-      ),
-    };
-
-    return res.status(201).json({ success: true, data: { worker, risk_profile: riskProfile } });
   } catch (err) {
     return next(err);
   }
