@@ -108,15 +108,37 @@ Gap → Auto payout ⚡
 
 Premiums are structured on a **weekly basis** to match the typical earnings cycle of a gig worker. Workers pay weekly, and coverage resets each Monday.
 
-### Base Premium Table
+<!-- ### Base Premium Table
 
 | Coverage Tier | Weekly Premium | Max Weekly Payout | Best For |
 |--------------|---------------|-------------------|----------|
 | Basic Shield | ₹35/week | ₹500 | Part-time workers (<5 hrs/day) |
 | Standard Shield | ₹65/week | ₹1,000 | Regular workers (5–8 hrs/day) |
-| Pro Shield | ₹99/week | ₹1,800 | Full-time workers (8+ hrs/day) |
+| Pro Shield | ₹99/week | ₹1,800 | Full-time workers (8+ hrs/day) | -->
 
-### Dynamic Risk Multipliers (AI-Adjusted)
+## 💰 Base Premium Plans
+
+| 🛡️ Plan | 💵 Weekly | 💸 Max Payout | 👤 Best For |
+|--------|----------|-------------|------------|
+| 🟢 **Basic Shield** | ₹35 | ₹500 | Part-time (<5 hrs/day) |
+| 🔵 **Standard Shield** | ₹65 | ₹1,000 | Regular (5–8 hrs/day) |
+| 🟣 **Pro Shield** | ₹99 | ₹1,800 | Full-time (8+ hrs/day) |
+
+
+## ⚡ Dynamic Risk Pricing (AI-Adjusted)
+
+> Premium adapts weekly based on real-world risk signals
+
+| 📊 Factor | 📈 Change | 💡 Why |
+|----------|----------|-------|
+| 🌧️ Monsoon (Jun–Sep) | +15% | Higher disruption risk |
+| 🌊 Flood-prone zone | +10% | Historical vulnerability |
+| 🟢 Flood-safe zone | -8% | Lower risk reward |
+| 🆕 New worker | +5% | Limited history |
+| ✅ No claims (3+ mo) | -5% | Loyalty bonus |
+| 🔮 High-risk forecast | +12% | Predictive pricing |
+
+<!-- ### Dynamic Risk Multipliers (AI-Adjusted)
 
 The base premium is adjusted weekly by our ML risk engine based on:
 
@@ -127,7 +149,7 @@ The base premium is adjusted weekly by our ML risk engine based on:
 | Worker's zone is flood-safe | -8% | Reward low-risk zones |
 | New worker (< 4 weeks) | +5% | Limited behavioral baseline |
 | Worker with 0 claims (3+ months) | -5% | Loyalty/low-risk bonus |
-| Predicted high-disruption week (weather model) | +12% | Forward-looking risk pricing |
+| Predicted high-disruption week (weather model) | +12% | Forward-looking risk pricing | -->
 
 **Example:** Arjun (Standard Shield, Koramangala zone, July monsoon season):
 `₹65 × 1.15 (monsoon) × 1.10 (flood-prone zone) = ₹82/week`
