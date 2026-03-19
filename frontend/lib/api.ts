@@ -129,7 +129,7 @@ export async function createPolicy(workerId: string, tier: string): Promise<Poli
 export async function getPolicies(workerId: string): Promise<Policy[] | null> {
   try {
     const res = await api.get(`/api/policies?workerId=${workerId}`);
-    return res.data;
+    return res.data.data || res.data;
   } catch {
     return null;
   }
@@ -138,7 +138,7 @@ export async function getPolicies(workerId: string): Promise<Policy[] | null> {
 export async function createClaim(data: ClaimData): Promise<Claim | null> {
   try {
     const res = await api.post("/api/claims", data);
-    return res.data;
+    return res.data.data || res.data;
   } catch {
     return null;
   }
@@ -148,7 +148,7 @@ export async function getClaims(workerId?: string): Promise<Claim[] | null> {
   try {
     const url = workerId ? `/api/claims?workerId=${workerId}` : "/api/claims";
     const res = await api.get(url);
-    return res.data;
+    return res.data.data || res.data;
   } catch {
     return null;
   }
@@ -157,7 +157,7 @@ export async function getClaims(workerId?: string): Promise<Claim[] | null> {
 export async function getClaimById(claimId: string): Promise<Claim | null> {
   try {
     const res = await api.get(`/api/claims/${claimId}`);
-    return res.data;
+    return res.data.data || res.data;
   } catch {
     return null;
   }

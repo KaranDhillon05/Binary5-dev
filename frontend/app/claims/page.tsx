@@ -30,7 +30,7 @@ export default function ClaimsPage() {
           ? localStorage.getItem("workerId") || "worker-001"
           : "worker-001";
       const data = await getClaims(workerId);
-      setClaims(data || MOCK_CLAIMS);
+      setClaims(Array.isArray(data) ? data : MOCK_CLAIMS);
       setLoading(false);
     }
     load();

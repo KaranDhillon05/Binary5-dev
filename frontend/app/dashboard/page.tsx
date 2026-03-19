@@ -30,7 +30,7 @@ export default function DashboardPage() {
 
       setWorker(w || MOCK_WORKER);
       setPolicy((policies && policies[0]) || MOCK_POLICY);
-      setClaims(c || MOCK_CLAIMS);
+      setClaims(Array.isArray(c) ? c : MOCK_CLAIMS);
       setLoading(false);
     }
     load();
@@ -46,7 +46,7 @@ export default function DashboardPage() {
     );
   }
 
-  const recentClaims = claims.slice(0, 3);
+  const recentClaims = Array.isArray(claims) ? claims.slice(0, 3) : [];
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-8">
