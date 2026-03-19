@@ -96,8 +96,14 @@ router.get(
     try {
       const { workerId } = req.query;
 
-      if (!workerId) {
+      if (!workerId || typeof workerId !== 'string') {
         return next(createError('workerId query parameter is required', 400));
+      }
+
+      // Verify worker exists first
+      const workerCheck = await query('SELECT id FROM workers WHERE id = $1', [workerId]);
+      if (workerCheck.rows.length === 0) {
+        return res.json({ success: true, data: [] }); // Return empty array if worker doesn't exist
       }
 
       const result = await query<Policy>(
