@@ -1,11 +1,11 @@
-# 🛡️ Q-Shield: AI-Powered Parametric Income Insurance for Q-Commerce Delivery Workers
+# Q-Shield: AI-Powered Parametric Income Insurance for Q-Commerce Delivery Workers
 
 > **Guidewire DEVTrails 2026 | Phase 1 Submission**  
 > Protecting the last-mile workforce — one week at a time.
 
 ---
 
-## 📋 Table of Contents
+## Table of Contents
 
 1. [The Problem](#the-problem)
 2. [Our Persona](#our-persona)
@@ -57,88 +57,24 @@ Q-Shield is a **parametric income insurance platform** — meaning payouts are t
 - Lost earnings due to weather disruptions
 - Lost earnings due to zone/area closures or curfews
 - Lost earnings due to severe pollution (AQI > 300)
-
-
----
-
-## ⚡ Core Innovation: Income Shadow
-
-Traditional parametric insurance reacts to events like rain or traffic.
-
-Q-Shield goes one step further — it models income itself.
-
-We create a real-time **Income Shadow** for every worker:
-a continuously updated estimate of what the worker *should* be earning based on:
-
-- Time of day
-- Delivery zone demand
-- Weather conditions
-- Historical earning patterns
-
-### 💡 How it works
-
-Expected Earnings (real-time) = f(time, zone, weather, demand)
-
-Actual Earnings = real-time delivery data
-
-Loss = Expected - Actual
-
-When this gap crosses a threshold, Q-Shield automatically triggers a payout — even if no explicit disruption event is declared.
-
-### 🚀 Why this matters
-
-- Moves from event-based → outcome-based protection
-- Captures hidden income loss (low demand, silent disruptions)
-- Enables fair, personalized payouts
-
-> Q-Shield doesn’t insure events — it insures income itself.
+- Vehicle repairs (excluded)
+- Health/accident/life insurance (excluded)
 
 ---
-
-Expected Earnings  ────────────────
-Actual Earnings    ────\_____
-
-Gap → Auto payout ⚡
-
----
-
-![Business & Risk Pool Diagram](./assets/business.jpeg)
 
 ## Weekly Premium Model
 
 Premiums are structured on a **weekly basis** to match the typical earnings cycle of a gig worker. Workers pay weekly, and coverage resets each Monday.
 
-<!-- ### Base Premium Table
+### Base Premium Table
 
 | Coverage Tier | Weekly Premium | Max Weekly Payout | Best For |
 |--------------|---------------|-------------------|----------|
 | Basic Shield | ₹35/week | ₹500 | Part-time workers (<5 hrs/day) |
 | Standard Shield | ₹65/week | ₹1,000 | Regular workers (5–8 hrs/day) |
-| Pro Shield | ₹99/week | ₹1,800 | Full-time workers (8+ hrs/day) | -->
+| Pro Shield | ₹99/week | ₹1,800 | Full-time workers (8+ hrs/day) |
 
-## 💰 Base Premium Plans
-
-| 🛡️ Plan | 💵 Weekly | 💸 Max Payout | 👤 Best For |
-|--------|----------|-------------|------------|
-| 🟢 **Basic Shield** | ₹35 | ₹500 | Part-time (<5 hrs/day) |
-| 🔵 **Standard Shield** | ₹65 | ₹1,000 | Regular (5–8 hrs/day) |
-| 🟣 **Pro Shield** | ₹99 | ₹1,800 | Full-time (8+ hrs/day) |
-
-
-## ⚡ Dynamic Risk Pricing (AI-Adjusted)
-
-> Premium adapts weekly based on real-world risk signals
-
-| 📊 Factor | 📈 Change | 💡 Why |
-|----------|----------|-------|
-| 🌧️ Monsoon (Jun–Sep) | +15% | Higher disruption risk |
-| 🌊 Flood-prone zone | +10% | Historical vulnerability |
-| 🟢 Flood-safe zone | -8% | Lower risk reward |
-| 🆕 New worker | +5% | Limited history |
-| ✅ No claims (3+ mo) | -5% | Loyalty bonus |
-| 🔮 High-risk forecast | +12% | Predictive pricing |
-
-<!-- ### Dynamic Risk Multipliers (AI-Adjusted)
+### Dynamic Risk Multipliers (AI-Adjusted)
 
 The base premium is adjusted weekly by our ML risk engine based on:
 
@@ -149,7 +85,7 @@ The base premium is adjusted weekly by our ML risk engine based on:
 | Worker's zone is flood-safe | -8% | Reward low-risk zones |
 | New worker (< 4 weeks) | +5% | Limited behavioral baseline |
 | Worker with 0 claims (3+ months) | -5% | Loyalty/low-risk bonus |
-| Predicted high-disruption week (weather model) | +12% | Forward-looking risk pricing | -->
+| Predicted high-disruption week (weather model) | +12% | Forward-looking risk pricing |
 
 **Example:** Arjun (Standard Shield, Koramangala zone, July monsoon season):
 `₹65 × 1.15 (monsoon) × 1.10 (flood-prone zone) = ₹82/week`
@@ -187,8 +123,7 @@ Q-Shield monitors **3 disruption categories** in real time using external APIs. 
 
 ## Application Workflow
 
-![Application Worklow](./assets/sequence.jpeg)
-<!-- ```
+```
 ┌─────────────────────────────────────────────────────────────┐
 │  ONBOARDING (5 min)                                         │
 │  Worker registers → uploads platform ID + Aadhaar           │
@@ -218,7 +153,7 @@ Q-Shield monitors **3 disruption categories** in real time using external APIs. 
 │  Worker notified via push + SMS                             │
 │  Claim logged to history for future risk modeling           │
 └─────────────────────────────────────────────────────────────┘
-``` -->
+```
 
 ---
 
@@ -259,7 +194,7 @@ Q-Shield monitors **3 disruption categories** in real time using external APIs. 
 
 ## Adversarial Defense & Anti-Spoofing Strategy
 
->  This section directly addresses the **Market Crash Scenario** (March 2026): a 500-worker GPS-spoofing syndicate that drained a competitor's liquidity pool via coordinated false claims.
+> This section directly addresses the **Market Crash Scenario** (March 2026): a 500-worker GPS-spoofing syndicate that drained a competitor's liquidity pool via coordinated false claims.
 
 ### 1. The Differentiation: Real Worker vs GPS Spoofer
 
@@ -369,9 +304,7 @@ Claim submitted
 
 ## Architecture Overview
 
-![](./assets/architecture.jpeg)
-
-<!-- ```
+```
 ┌─────────────────┐       ┌──────────────────────────────┐
 │   Worker App    │──────▶│     Next.js Frontend (PWA)   │
 │ (Mobile / Web)  │       │  Worker Portal + Admin View  │
@@ -401,7 +334,7 @@ Claim submitted
                           │  - Mock Platform API             │
                           │  - Mock Payment Gateway (UPI)    │
                           └──────────────────────────────────┘
-``` -->
+```
 
 **Core data flows:**
 1. **Onboarding:** Worker registers → ML service risk-scores profile → weekly premium quote generated → policy created on payment.
@@ -411,7 +344,8 @@ Claim submitted
 
 ---
 
-<!-- 
+## Tech Stack
+
 | Layer | Technology | Rationale |
 |-------|-----------|-----------|
 | Frontend | Next.js 15 (React + TypeScript) | PWA support, fast rendering, easy Vercel deploy |
@@ -421,20 +355,38 @@ Claim submitted
 | Weather Data | OpenWeather API | Free tier, reliable, covers Indian cities well |
 | Pollution Data | OpenAQ API | Free, covers Bengaluru AQI stations |
 | Maps / Zones | Mapbox GL JS | Free tier sufficient for zone visualisation |
-| Deployment | Vercel (frontend) + Railway (API + ML) | Free tiers, auto-deploy from GitHub | -->
+| Deployment | Vercel (frontend) + Railway (API + ML) | Free tiers, auto-deploy from GitHub |
 
-## ⚙️ Tech Stack
+---
 
-| 🧩 Layer | 🚀 Technology | 💡 Why We Chose It |
-|----------|-------------|-------------------|
-| 🎨 **Frontend** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nextjs/nextjs-original.svg" width="20"/> Next.js 15 <br> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg" width="20"/> React <br> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/typescript/typescript-original.svg" width="20"/> TypeScript | PWA support, fast rendering, seamless Vercel deploy |
-| ⚡ **Backend API** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/nodejs/nodejs-original.svg" width="20"/> Node.js <br> <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/express/express-original.svg" width="20"/> Express | Fast to build, scalable, strong ecosystem |
-| 🤖 **ML Service** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/python/python-original.svg" width="20"/> Python <br> ⚡ FastAPI <br> 🤖 scikit-learn | Isolated ML service, easy model iteration |
-| 🗄️ **Database** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/postgresql/postgresql-original.svg" width="20"/> PostgreSQL <br> ⚡ Supabase | Reliable, real-time subscriptions, free tier |
-| 🌦️ **Weather Data** | ☁️ OpenWeather API | Free tier, reliable, strong India coverage |
-| 🌫️ **Pollution Data** | 🌍 OpenAQ API | Free AQI data, Bengaluru coverage |
-| 🗺️ **Maps / Zones** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mapbox/mapbox-original.svg" width="20"/> Mapbox GL JS | Efficient zone visualization |
-| 🚀 **Deployment** | <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vercel/vercel-original.svg" width="20"/> Vercel <br> 🚆 Railway | Auto-deploy, fast CI/CD |
+## Development Plan
+
+### Phase 1 (Current — March 20): Ideation & Foundation
+- [x] Persona definition and use case research
+- [x] Architecture design
+- [x] Weekly premium model defined
+- [x] Parametric triggers defined
+- [x] Anti-spoofing strategy designed
+- [ ] GitHub repo + this README
+- [ ] Minimal prototype (Next.js landing + 2 API endpoints)
+- [ ] 2-minute strategy video
+
+### Phase 2 (March 21 – April 4): Automation & Protection
+- Worker onboarding flow (full UI)
+- Policy creation + weekly premium payment (mock UPI)
+- Dynamic premium calculation (ML model integrated)
+- 3–5 automated parametric triggers (live API calls)
+- Claims management UI
+- Basic fraud scoring endpoint live
+
+### Phase 3 (April 5 – 17): Scale & Optimise
+- Advanced fraud detection (DBSCAN ring detection live)
+- Instant payout simulation (Razorpay test mode)
+- Worker dashboard (earnings protected, active coverage)
+- Admin/insurer dashboard (loss ratios, predictive analytics)
+- Full demo video (simulated rainstorm → auto claim → payout)
+- Final pitch deck
+
 ---
 
 ## Platform Choice: Web (PWA)
@@ -448,5 +400,5 @@ We chose a **Progressive Web App (PWA)** over a native mobile app for the follow
 
 ---
 
-*Built with ❤️ for India's last-mile workforce.*  
-*DEVTrails 2026 | Team Binary Five*
+*Built for India's last-mile workforce.*  
+*DEVTrails 2026 | Team Q-Shield*
